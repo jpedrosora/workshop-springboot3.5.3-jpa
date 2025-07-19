@@ -3,6 +3,7 @@ package com.project1.course.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project1.course.entities.pk.OrderItemPK;
 
 import jakarta.persistence.EmbeddedId;
@@ -14,8 +15,10 @@ import jakarta.persistence.Table;
 public class OrderItem implements Serializable{
 	private static final long serialVersionUID = 1L;
 
+	//sempre que for criar uma classe auxiliar q é id composto deve ser instanciada
+	//o id que tem associacao com o order
 	@EmbeddedId
-	private OrderItemPK id;
+	private OrderItemPK id = new OrderItemPK();
 	
 	private Integer quantity;
 	private Double price;
@@ -30,6 +33,8 @@ public class OrderItem implements Serializable{
 		this.price = price;
 	}
 	
+	//na java EE o que prevalece é o metodo get
+	@JsonIgnore
 	public Order getOrder() {
 		return id.getOrder();
 	}
