@@ -13,6 +13,8 @@ import com.project1.course.repositories.UserRepository;
 import com.project1.course.services.exceptions.DatabaseException;
 import com.project1.course.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 //annotation para o spring identificar a injeção de dependencia @Component @Repository
 @Service
 public class UserService {
@@ -46,9 +48,13 @@ public class UserService {
 
 	public User update(Long id, User obj) {
 		// o metodo deixa somente o obj mapeado para ser trabalhado
+		try {
 		User entity = repository.getReferenceById(id);
 		updateData(entity, obj);
 		return repository.save(entity);
+		}catch(EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User entity, User obj) {
