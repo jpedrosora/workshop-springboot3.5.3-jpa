@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.project1.course.entities.User;
 import com.project1.course.repositories.UserRepository;
+import com.project1.course.services.exceptions.ResourceNotFoundException;
 
 //annotation para o spring identificar a injeção de dependencia @Component @Repository
 @Service
@@ -23,7 +24,7 @@ public class UserService {
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
 		//retorna o obj do tipo declarado no Optional
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public User insert(User obj) {
